@@ -2,6 +2,7 @@
 
 publiceth=$1
 imagename=$2
+isFirstCreateImage=$3
 
 #预配置环境
 systemctl stop ufw
@@ -14,18 +15,40 @@ sysctl -p
 /sbin/iptables -P FORWARD ACCEPT
 
 #创建图中所有的节点，每个一个容器
+if [ "$isFirstCreateImage" == "true" ];then
+  echo "create all containers"
 
-echo "create all containers"
+  docker run --privileged=true --net none --name aix -d ${imagename}
+  docker run --privileged=true --net none --name solaris -d ${imagename}
+  docker run --privileged=true --net none --name gemini -d ${imagename}
+  docker run --privileged=true --net none --name gateway -d ${imagename}
+  docker run --privileged=true --net none --name netb -d ${imagename}
+  docker run --privileged=true --net none --name sun -d ${imagename}
+  docker run --privileged=true --net none --name svr4 -d ${imagename}
+  docker run --privileged=true --net none --name bsdi -d ${imagename}
+  docker run --privileged=true --net none --name slip -d ${imagename}
 
-docker run --privileged=true --net none --name aix -d ${imagename}
-docker run --privileged=true --net none --name solaris -d ${imagename}
-docker run --privileged=true --net none --name gemini -d ${imagename}
-docker run --privileged=true --net none --name gateway -d ${imagename}
-docker run --privileged=true --net none --name netb -d ${imagename}
-docker run --privileged=true --net none --name sun -d ${imagename}
-docker run --privileged=true --net none --name svr4 -d ${imagename}
-docker run --privileged=true --net none --name bsdi -d ${imagename}
-docker run --privileged=true --net none --name slip -d ${imagename}
+  docker exec -it aix hostname aix
+  docker exec -it solaris hostname solaris
+  docker exec -it gemini hostname gemini
+  docker exec -it gateway hostname gateway
+  docker exec -it netb hostname netb
+  docker exec -it sun hostname sun
+  docker exec -it svr4 hostname svr4
+  docker exec -it bsdi hostname bsdi
+  docker exec -it slip hostname slip
+else
+  echo "start all containers"
+  docker start aix
+  docker start solaris
+  docker start gemini
+  docker start gateway
+  docker start netb
+  docker start sun
+  docker start svr4
+  docker start bsdi
+  docker start slip
+fi
 
 #创建两个网桥，代表两个二层网络
 echo "create bridges"
