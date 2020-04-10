@@ -27,16 +27,6 @@ if [ "$isFirstCreateImage" == "true" ];then
   docker run --privileged=true --net none --name svr4 -d ${imagename}
   docker run --privileged=true --net none --name bsdi -d ${imagename}
   docker run --privileged=true --net none --name slip -d ${imagename}
-
-  docker exec -it aix hostname aix
-  docker exec -it solaris hostname solaris
-  docker exec -it gemini hostname gemini
-  docker exec -it gateway hostname gateway
-  docker exec -it netb hostname netb
-  docker exec -it sun hostname sun
-  docker exec -it svr4 hostname svr4
-  docker exec -it bsdi hostname bsdi
-  docker exec -it slip hostname slip
 else
   echo "start all containers"
   docker start aix
@@ -50,16 +40,29 @@ else
   docker start slip
 fi
 
+# 设置一下hostname
+docker exec -it aix hostname aix
+docker exec -it solaris hostname solaris
+docker exec -it gemini hostname gemini
+docker exec -it gateway hostname gateway
+docker exec -it netb hostname netb
+docker exec -it sun hostname sun
+docker exec -it svr4 hostname svr4
+docker exec -it bsdi hostname bsdi
+docker exec -it slip hostname slip
+
 #创建两个网桥，代表两个二层网络
-echo "create bridges"
+if [ "$isFirstCreateImage" == "true" ];then
+  echo "create bridges"
 
-ovs-vsctl add-br net1
-ip link set net1 up
-ovs-vsctl add-br net2
-ip link set net1 up
+  ovs-vsctl add-br net1
+  ip link set net1 up
+  ovs-vsctl add-br net2
+  ip link set net1 up
 
-#brctl addbr net1
-#brctl addbr net2
+  #brctl addbr net1
+  #brctl addbr net2
+fi
 
 #将所有的节点连接到两个网络
 echo "connect all containers to bridges"

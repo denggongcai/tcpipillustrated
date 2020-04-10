@@ -5,6 +5,10 @@
 2. 安装open v switch
 ``` shell
 sudo apt-get -y install openvswitch-common openvswitch-dbg openvswitch-switch python-openvswitch  openvswitch-pki
+
+sudo apt-get -y install bridge-utils
+
+sudo apt-get -y install arping
 ```
 3. 安装docker
 ``` shell
