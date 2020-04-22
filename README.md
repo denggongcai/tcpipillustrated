@@ -1,5 +1,9 @@
 # tcpipillustrated
 
+## 实验网络
+
+![test-net](./test-net.jpeg)
+
 ## 环境搭建
 1. 系统环境ubuntu 18.04
 2. 安装open v switch
