@@ -17,6 +17,15 @@ sysctl -p
 #创建图中所有的节点，每个一个容器
 if [ "$isFirstCreateImage" == "true" ];then
   echo "create all containers"
+  docker stop aix >> /dev/null && docker rm aix >> /dev/null
+  docker stop solaris >> /dev/null && docker rm solaris >> /dev/null
+  docker stop gemini >> /dev/null && docker rm gemini >> /dev/null
+  docker stop gateway >> /dev/null && docker rm gateway >> /dev/null
+  docker stop netb >> /dev/null && docker rm netb >> /dev/null
+  docker stop sun >> /dev/null && docker rm sun >> /dev/null
+  docker stop svr4 >> /dev/null && docker rm svr4 >> /dev/null
+  docker stop bsdi >> /dev/null && docker rm bsdi >> /dev/null
+  docker stop slip >> /dev/null && docker rm slip >> /dev/null
 
   docker run --privileged=true --net none --name aix -d ${imagename}
   docker run --privileged=true --net none --name solaris -d ${imagename}
