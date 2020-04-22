@@ -17,16 +17,6 @@ sysctl -p
 #创建图中所有的节点，每个一个容器
 if [ "$isFirstCreateImage" == "true" ];then
   echo "create all containers"
-  docker stop aix >> /dev/null && docker rm aix >> /dev/null
-  docker stop solaris >> /dev/null && docker rm solaris >> /dev/null
-  docker stop gemini >> /dev/null && docker rm gemini >> /dev/null
-  docker stop gateway >> /dev/null && docker rm gateway >> /dev/null
-  docker stop netb >> /dev/null && docker rm netb >> /dev/null
-  docker stop sun >> /dev/null && docker rm sun >> /dev/null
-  docker stop svr4 >> /dev/null && docker rm svr4 >> /dev/null
-  docker stop bsdi >> /dev/null && docker rm bsdi >> /dev/null
-  docker stop slip >> /dev/null && docker rm slip >> /dev/null
-
   docker run --privileged=true --net none --name aix -d ${imagename}
   docker run --privileged=true --net none --name solaris -d ${imagename}
   docker run --privileged=true --net none --name gemini -d ${imagename}
@@ -36,6 +26,17 @@ if [ "$isFirstCreateImage" == "true" ];then
   docker run --privileged=true --net none --name svr4 -d ${imagename}
   docker run --privileged=true --net none --name bsdi -d ${imagename}
   docker run --privileged=true --net none --name slip -d ${imagename}
+
+  # 设置一下hosts
+  docker exec -it aix cat /tmp/hosts >> /etc/hosts
+  docker exec -it solaris cat /tmp/hosts >> /etc/hosts
+  docker exec -it gemini cat /tmp/hosts >> /etc/hosts
+  docker exec -it gateway cat /tmp/hosts >> /etc/hosts
+  docker exec -it netb cat /tmp/hosts >> /etc/hosts
+  docker exec -it sun cat /tmp/hosts >> /etc/hosts
+  docker exec -it svr4 cat /tmp/hosts >> /etc/hosts
+  docker exec -it bsdi cat /tmp/hosts >> /etc/hosts
+  docker exec -it slip cat /tmp/hosts >> /etc/hosts
 else
   echo "start all containers"
   docker start aix
